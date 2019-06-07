@@ -11,7 +11,7 @@ fi
 
 echo -n "Locating cpp ... "
 for bin in bin usr/bin usr/local/bin; do
-	for cmd in "$DIR/$bin/"*-cpp; do
+	for cmd in "$DIR/$bin/"*-cpp "$DIR/$bin/"*-cpp.exe; do
 		if [ -x "$cmd" ]; then
 			echo "$cmd"
 			CPP="$cmd"
