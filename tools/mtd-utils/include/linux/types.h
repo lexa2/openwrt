@@ -5,7 +5,13 @@
 
 typedef uint16_t __u16;
 typedef uint32_t __u32;
+
+#if defined(__CYGWIN__)
+typedef __signed__ long long __s64;
+typedef unsigned long long __u64;
+#else
 typedef uint64_t __u64;
+#endif
 
 typedef __u16 __le16;
 typedef __u32 __le32;
