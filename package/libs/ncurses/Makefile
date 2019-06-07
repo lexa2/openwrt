@@ -27,6 +27,12 @@ PKG_BUILD_DEPENDS:=ncurses/host
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/host-build.mk
 
+ifeq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
+EXEC_SUFFIX:=.exe
+else
+EXEC_SUFFIX:=
+endif
+
 define Package/terminfo
   SECTION:=libs
   CATEGORY:=Libraries
@@ -159,7 +165,7 @@ endef
 
 define Host/Compile
 	$(MAKE) -C $(HOST_BUILD_DIR) libs
-	$(MAKE) -C $(HOST_BUILD_DIR)/progs tic
+	$(MAKE) -C $(HOST_BUILD_DIR)/progs tic$(EXEC_SUFFIX)
 endef
 
 $(eval $(call HostBuild))
