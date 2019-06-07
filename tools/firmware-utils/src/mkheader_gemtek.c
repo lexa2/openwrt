@@ -46,7 +46,7 @@
 # include <libkern/OSByteOrder.h>
 # define le32 OSSwapHostToLittleInt32
 #else
-# if defined(__linux__)
+# if (defined(__linux__) || defined(__CYGWIN__))
 #  include <endian.h>
 #  if __BYTE_ORDER == __BIG_ENDIAN
 #   define CPU_BIG_ENDIAN
