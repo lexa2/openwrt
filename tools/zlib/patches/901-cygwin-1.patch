@@ -1,0 +1,56 @@
+Index: zlib-1.2.11/gzguts.h
+===================================================================
+--- zlib-1.2.11.orig/gzguts.h
++++ zlib-1.2.11/gzguts.h
+@@ -39,7 +39,7 @@
+ #  include <io.h>
+ #endif
+ 
+-#if defined(_WIN32) || defined(__CYGWIN__)
++#if defined(_WIN32)
+ #  define WIDECHAR
+ #endif
+ 
+Index: zlib-1.2.11/win32/zlib.def
+===================================================================
+--- zlib-1.2.11.orig/win32/zlib.def
++++ zlib-1.2.11/win32/zlib.def
+@@ -91,4 +91,3 @@ EXPORTS
+     inflateCodesUsed
+     inflateResetKeep
+     deflateResetKeep
+-    gzopen_w
+Index: zlib-1.2.11/zlib.h
+===================================================================
+--- zlib-1.2.11.orig/zlib.h
++++ zlib-1.2.11/zlib.h
+@@ -1893,7 +1893,7 @@ ZEXTERN int            ZEXPORT inflateVa
+ ZEXTERN unsigned long  ZEXPORT inflateCodesUsed OF ((z_streamp));
+ ZEXTERN int            ZEXPORT inflateResetKeep OF((z_streamp));
+ ZEXTERN int            ZEXPORT deflateResetKeep OF((z_streamp));
+-#if (defined(_WIN32) || defined(__CYGWIN__)) && !defined(Z_SOLO)
++#if defined(_WIN32) && !defined(Z_SOLO)
+ ZEXTERN gzFile         ZEXPORT gzopen_w OF((const wchar_t *path,
+                                             const char *mode));
+ #endif
+Index: zlib-1.2.11/CMakeLists.txt
+===================================================================
+--- zlib-1.2.11.orig/CMakeLists.txt
++++ zlib-1.2.11/CMakeLists.txt
+@@ -123,11 +123,11 @@ set(ZLIB_SRCS
+     zutil.c
+ )
+ 
+-if(NOT MINGW)
+-    set(ZLIB_DLL_SRCS
+-        win32/zlib1.rc # If present will override custom build rule below.
+-    )
+-endif()
++#if(NOT MINGW)
++#    set(ZLIB_DLL_SRCS
++#        win32/zlib1.rc # If present will override custom build rule below.
++#    )
++#endif()
+ 
+ if(CMAKE_COMPILER_IS_GNUCC)
+     if(ASM686)
