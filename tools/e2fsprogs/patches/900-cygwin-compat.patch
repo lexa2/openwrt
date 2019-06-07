@@ -1,0 +1,12 @@
+Index: e2fsprogs-1.44.2/config/mkinstalldirs
+===================================================================
+--- e2fsprogs-1.44.2.orig/config/mkinstalldirs
++++ e2fsprogs-1.44.2/config/mkinstalldirs
+@@ -19,6 +19,7 @@ do
+      pathcomp="$pathcomp$d"
+      case "$pathcomp" in
+        -* ) pathcomp=./$pathcomp ;;
++       //* ) pathcomp=`echo "$pathcomp" | sed -e 's,//,/,'` ;;
+      esac
+ 
+      if test ! -d "$pathcomp"; then
