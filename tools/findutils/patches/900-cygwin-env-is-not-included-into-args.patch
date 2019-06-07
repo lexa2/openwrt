@@ -1,0 +1,33 @@
+Index: findutils-4.6.0/lib/buildcmd.c
+===================================================================
+--- findutils-4.6.0.orig/lib/buildcmd.c
++++ findutils-4.6.0/lib/buildcmd.c
+@@ -509,6 +509,8 @@ bc_init_controlinfo (struct buildcmd_con
+ 
+   ctl->exit_if_size_exceeded = 0;
+ 
++
++#ifndef __CYGWIN__
+   /* Take the size of the environment into account.  */
+   if (size_of_environment > ctl->posix_arg_size_max)
+     {
+@@ -525,9 +527,19 @@ bc_init_controlinfo (struct buildcmd_con
+     }
+   else
+     {
++      ctl->posix_arg_size_max -= headroom;
+       ctl->posix_arg_size_max -= size_of_environment;
++    }
++#else
++  if (headroom >= ctl->posix_arg_size_max)
++    {
++      return BC_INIT_CANNOT_ACCOMODATE_HEADROOM;
++    }
++  else
++    {
+       ctl->posix_arg_size_max -= headroom;
+     }
++#endif
+ 
+   /* need to subtract 2 on the following line - for Linux/PPC */
+   ctl->max_arg_count = (ctl->posix_arg_size_max / sizeof (char*)) - 2u;
