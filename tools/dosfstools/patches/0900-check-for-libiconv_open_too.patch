@@ -1,0 +1,12 @@
+Index: dosfstools-4.1/configure.ac
+===================================================================
+--- dosfstools-4.1.orig/configure.ac
++++ dosfstools-4.1/configure.ac
+@@ -60,6 +60,7 @@ if test "x$with_udev" != "xno"; then
+ fi
+ 
+ AC_CHECK_LIB(iconv, iconv_open)
++AC_CHECK_LIB(iconv, libiconv_open)
+ 
+ # xxd (distributed with vim) is used in the testsuite
+ AC_CHECK_PROG([XXD_FOUND], [xxd], [yes])

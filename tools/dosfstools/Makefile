@@ -24,4 +24,8 @@ ifeq ($(HOST_OS),Darwin)
 HOST_CFLAGS += -UHAVE_ENDIAN_H
 endif
 
+ifeq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
+HOST_LIBS += -liconv
+endif
+
 $(eval $(call HostBuild))
