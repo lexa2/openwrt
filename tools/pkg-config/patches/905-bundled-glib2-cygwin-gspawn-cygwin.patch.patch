@@ -1,0 +1,13 @@
+Index: pkg-config-0.29.2/glib/glib/gspawn.c
+===================================================================
+--- pkg-config-0.29.2.orig/glib/glib/gspawn.c
++++ pkg-config-0.29.2/glib/glib/gspawn.c
+@@ -1040,7 +1040,7 @@ fdwalk (int (*cb)(void *data, int fd), v
+   struct rlimit rl;
+ #endif
+ 
+-#ifdef __linux__  
++#if defined(__linux__) || defined(__CYGWIN__)
+   DIR *d;
+ 
+   if ((d = opendir("/proc/self/fd"))) {

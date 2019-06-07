@@ -1,0 +1,15 @@
+Index: pkg-config-0.29.2/glib/glib/gconvert.c
+===================================================================
+--- pkg-config-0.29.2.orig/glib/glib/gconvert.c
++++ pkg-config-0.29.2/glib/glib/gconvert.c
+@@ -1583,7 +1583,9 @@ g_filename_from_uri (const gchar *uri,
+       return NULL;
+     }
+ 	
+-  if (has_case_prefix (path_part, "///")) 
++  if (has_case_prefix (path_part, "////"))
++    path_part += 1;
++  else if (has_case_prefix (path_part, "///"))
+     path_part += 2;
+   else if (has_case_prefix (path_part, "//"))
+     {
