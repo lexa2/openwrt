@@ -25,9 +25,18 @@ ifeq ($(HOST_OS),Darwin)
 HOST_LDFLAGS += -framework CoreFoundation -framework Carbon
 endif
 
+ifeq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
+EXEC_SUFFIX:=.exe
+else
+EXEC_SUFFIX:=
+endif
+
 define Host/Install
 	$(MAKE) -C $(HOST_BUILD_DIR) install
-	mv $(STAGING_DIR_HOST)/bin/pkg-config $(STAGING_DIR_HOST)/bin/pkg-config.real
+	mv $(STAGING_DIR_HOST)/bin/pkg-config$(EXEC_SUFFIX) $(STAGING_DIR_HOST)/bin/pkg-config.real$(EXEC_SUFFIX)
+ifeq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
+	-rm -f $(STAGING_DIR_HOST)/bin/pkg-config
+endif
 	$(INSTALL_BIN) ./files/pkg-config $(STAGING_DIR_HOST)/bin/pkg-config
 endef
 

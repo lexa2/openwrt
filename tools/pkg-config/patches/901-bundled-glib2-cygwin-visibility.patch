@@ -1,0 +1,13 @@
+Index: pkg-config-0.29.2/glib/configure
+===================================================================
+--- pkg-config-0.29.2.orig/glib/configure
++++ pkg-config-0.29.2/glib/configure
+@@ -26548,7 +26548,7 @@ fi
+ 
+ GLIB_HIDDEN_VISIBILITY_CFLAGS=""
+ case "$host" in
+-  *-*-mingw*)
++  *-*-cygwin*|*-*-mingw*)
+ 
+ $as_echo "#define _GLIB_EXTERN __attribute__((visibility(\"default\"))) __declspec(dllexport) extern" >>confdefs.h
+ 
