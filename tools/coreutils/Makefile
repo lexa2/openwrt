@@ -16,7 +16,13 @@ PKG_HASH:=8891d349ee87b9ff7870f52b6d9312a9db672d2439d289bc57084771ca21656b
 
 HOST_BUILD_PARALLEL := 1
 
-BUILD_PROGRAMS = date readlink
+ifeq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
+EXEC_SUFFIX:=.exe
+else
+EXEC_SUFFIX:=
+endif
+
+BUILD_PROGRAMS = date$(EXEC_SUFFIX) readlink$(EXEC_SUFFIX)
 
 include $(INCLUDE_DIR)/host-build.mk
 
