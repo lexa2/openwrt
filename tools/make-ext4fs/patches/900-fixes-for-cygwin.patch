@@ -1,0 +1,52 @@
+Index: make-ext4fs-2016-08-14-484903e4/ext4_utils.h
+===================================================================
+--- make-ext4fs-2016-08-14-484903e4.orig/ext4_utils.h
++++ make-ext4fs-2016-08-14-484903e4/ext4_utils.h
+@@ -41,7 +41,7 @@ extern "C" {
+ #include <setjmp.h>
+ #include <stdint.h>
+ 
+-#if defined(__APPLE__) && defined(__MACH__)
++#if (defined(__APPLE__) && defined(__MACH__)) || defined(__CYGWIN__)
+ #define lseek64 lseek
+ #define ftruncate64 ftruncate
+ #define mmap64 mmap
+Index: make-ext4fs-2016-08-14-484903e4/ext4fixup.c
+===================================================================
+--- make-ext4fs-2016-08-14-484903e4.orig/ext4fixup.c
++++ make-ext4fs-2016-08-14-484903e4/ext4fixup.c
+@@ -27,7 +27,7 @@
+ #include <fcntl.h>
+ #include <unistd.h>
+ 
+-#if defined(__APPLE__) && defined(__MACH__)
++#if (defined(__APPLE__) && defined(__MACH__)) || defined(__CYGWIN__)
+ #define lseek64 lseek
+ #define off64_t off_t
+ #endif
+Index: make-ext4fs-2016-08-14-484903e4/libsparse/output_file.c
+===================================================================
+--- make-ext4fs-2016-08-14-484903e4.orig/libsparse/output_file.c
++++ make-ext4fs-2016-08-14-484903e4/libsparse/output_file.c
+@@ -35,7 +35,7 @@
+ #include "sparse_crc32.h"
+ #include "sparse_format.h"
+ 
+-#if defined(__APPLE__) && defined(__MACH__)
++#if (defined(__APPLE__) && defined(__MACH__)) || defined(__CYGWIN__)
+ #define lseek64 lseek
+ #define ftruncate64 ftruncate
+ #define mmap64 mmap
+Index: make-ext4fs-2016-08-14-484903e4/libsparse/sparse_read.c
+===================================================================
+--- make-ext4fs-2016-08-14-484903e4.orig/libsparse/sparse_read.c
++++ make-ext4fs-2016-08-14-484903e4/libsparse/sparse_read.c
+@@ -35,7 +35,7 @@
+ #include "sparse_file.h"
+ #include "sparse_format.h"
+ 
+-#if defined(__APPLE__) && defined(__MACH__)
++#if (defined(__APPLE__) && defined(__MACH__)) || defined(__CYGWIN__)
+ #define lseek64 lseek
+ #define off64_t off_t
+ #endif
