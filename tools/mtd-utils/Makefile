@@ -18,6 +18,7 @@ PKG_FIXUP:=autoreconf
 include $(INCLUDE_DIR)/host-build.mk
 
 ifneq ($(HOST_OS),Linux)
+ifneq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
   HOST_CFLAGS += \
 	-I$(CURDIR)/include \
 	-Dloff_t=off_t \
@@ -25,6 +26,14 @@ ifneq ($(HOST_OS),Linux)
 	-include endian.h \
 	-DNO_NATIVE_SUPPORT \
 	-include fls.h
+else
+  HOST_CFLAGS += \
+	-I$(CURDIR)/include \
+	-include endian.h \
+	-DNO_NATIVE_SUPPORT \
+	-include fls.h \
+	-D__USE_LINUX_IOCTL_DEFS
+endif
 endif
 
 HOST_CONFIGURE_VARS+= \
@@ -35,8 +44,14 @@ HOST_CONFIGURE_ARGS+= \
 	--without-xattr \
 	--without-lzo
 
+ifeq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
+EXEC_SUFFIX:=.exe
+else
+EXEC_SUFFIX:=
+endif
+
 HOST_MAKE_FLAGS += \
-	PROGRAMS="mkfs.jffs2 ubinize mkfs.ubifs"
+	PROGRAMS="mkfs.jffs2$(EXEC_SUFFIX) ubinize$(EXEC_SUFFIX) mkfs.ubifs$(EXEC_SUFFIX)"
 
 define Host/Install
 	$(CP) \
