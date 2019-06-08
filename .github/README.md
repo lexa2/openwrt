@@ -13,10 +13,11 @@ This is the fork of the OpenWrt patched to be buildable under cygwin.
 * Relevant cygwin development packages installed: make, gcc and g++ 4.8+, libncurses-devel,
   perl, perl(Thread::Queue), tar, findutils, patch, diffutils, fileutils, gawk, grep, unzip,
   bzip2, wget, python, git.
+* In case your image includes u-boot you will also nees these deps: xxd, swig, python2-devel.
 * Compiled and installed [upoll](https://github.com/lexa2/upoll) and [cygepoll](https://github.com/lexa2/cygepoll).
   (autoconf and automake cygwin packages are required to complete this step)
-* Safe bet would be to use "noacl" for the mountpoint openwrt is cloned to. There might be weird permission-related
-  issues otherwise like files having 040 mode and being unreadable after openwrt applying a patch.
+* Do not use "noacl" for the mountpoint openwrt is cloned to. It will result in rootfs permissions screwed up
+  and built image falling with kernel panic as soon as it tries to execute init.
 * A lot of patience as compiling openwrt under cygwin is way slower compared to normal linux build.
 * Good idea would be to add cygwin and openwrt clone folder into the exceptions list of your antivirus.
   Adding relevant folders into exceptions of built-in Windows 10 defender resulted in 3x reduced compile time.
@@ -33,6 +34,27 @@ Follow the usual openwrt building procedure - just the same way it is done on li
 # make defconfig
 # make -j16
 ```
+
+### Known issues
+
+* Most of the packages that are included in the OpenWrt are to be only cross-compiled for the target system and have
+  nothing to with the host OS and its environment. OpenWrt is a really clever system that self-builds the entire
+  toolchain for cross-compiling. Thus there should be no problems with compiling most packages under cygwin as long 
+  as OpenWrt managed to compile its toolchain. But there's a minority of packages that are built (at least partly) 
+  with host system as a target. Good example is the {ncurses package](https://github.com/lexa2/openwrt/blob/v18.06.2/package/libs/ncurses/Makefile) 
+  which build tic tool on the host and use it to generate terminfo definitions to be included into resulting package. 
+  
+  Packages of this kind may and will cause all kind of pains when building under cygwin. One of the frequently used 
+  package you're most probably will encounter is the u-boot. There are several problems with it that one will have to 
+  handle:
+  1. In most versions of u-boot Makefile includes enforcement of the ANSI C mode when host OS is cygwin. 
+     This is wrong. And it results in u-boot compilation failure from the very start.
+	 It should be patched out like it was done in [here](https://github.com/lexa2/openwrt/blob/0145afd394214b1562382518a3f3970c5ecd3628/package/boot/uboot-mediatek/patches/0900-fix-hostcflags-under-cygwin.patch).
+  2. U-boot heavily relies on linux-specific macros and types like __be32 or __swig32. Under cygwin the only
+     option is to feed u-boot with what it wants by providing a sufficient mimimal subset of relevant headers.
+	 Good example on how to do it is available [here](https://github.com/lexa2/openwrt/commit/0145afd394214b1562382518a3f3970c5ecd3628#diff-3897d3a104290123d4d1b617665f498c).
+	 Please be sure to open up a pull request against this repo with board specific changes to related u-boot package.
+	 Thanks for contributing.
 
 ## Authors
 
