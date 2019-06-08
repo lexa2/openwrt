@@ -1,0 +1,15 @@
+Index: u-boot-2019.01/Makefile
+===================================================================
+--- u-boot-2019.01.orig/Makefile
++++ u-boot-2019.01/Makefile
+@@ -268,10 +268,6 @@ ifeq ($(HOSTOS),linux)
+ HOSTCFLAGS += $(CSTD_FLAG)
+ endif
+ 
+-ifeq ($(HOSTOS),cygwin)
+-HOSTCFLAGS	+= -ansi
+-endif
+-
+ # Mac OS X / Darwin's C preprocessor is Apple specific.  It
+ # generates numerous errors and warnings.  We want to bypass it
+ # and use GNU C's cpp.	To do this we pass the -traditional-cpp
