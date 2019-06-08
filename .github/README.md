@@ -55,6 +55,25 @@ Follow the usual openwrt building procedure - just the same way it is done on li
 	 Good example on how to do it is available [here](https://github.com/lexa2/openwrt/commit/0145afd394214b1562382518a3f3970c5ecd3628#diff-3897d3a104290123d4d1b617665f498c).
 	 Please be sure to open up a pull request against this repo with board specific changes to related u-boot package.
 	 Thanks for contributing.
+* Sometimes strange and hard to understand issues arise related to the permissions of the files that are copied or 
+  created during the build. Typically the problem manifest itself as a build failure with error messages stating
+  "permission denided". Actual problem is that windows ACL on the files/folders where you build OpenWRT got changed
+  from what they were set to initially by the cygwin. Most of the time the problem is caused by someone opening up
+  the permissions tab on folder properties and allowing windows explorer to "fix the order of the ACL rules".  
+  
+  To reset permissions into sensible defaults one may try to start up mintty as Administrator and execute the following:
+  ```
+  $ cd /path/to/openwrt
+  $ setfacl -k -b .
+  $ chown $(id -un) .
+  $ chmod ug+rwx .
+  $ find . -type f -exec setfacl -k -b \{\} \;
+  $ find . -type f -exec chown $(id -un) \{\} \;
+  $ find . -type f -exec chmod ug+rw \{\} \;
+  $ find . -type d -exec setfacl -k -b \{\} \;
+  $ find . -type d -exec chown $(id -un) \{\} \;
+  $ find . -type d -exec chmod ug+rwx \{\} \;
+  ```
 
 ## Authors
 
