@@ -36,6 +36,18 @@ UBOOT_TARGETS := \
 
 UBOOT_CONFIGURE_VARS += USE_PRIVATE_LIBGCC=yes
 
+# U-Boot heavily relies on linux-specific types and swabs.
+# Make them kind-a available under non-linux OS (CYGWIN for now)
+ifneq ($(HOST_OS),Linux)
+ifeq (CYGWIN,$(findstring CYGWIN,$(HOST_OS)))
+  HOST_CFLAGS += \
+	-I$(CURDIR)/include \
+	-include linux/types.h \
+	-include linux/swab.h \
+	-D__USE_LINUX_IOCTL_DEFS
+endif
+endif
+
 UBOOT_MAKE_FLAGS = \
 	HOSTCC="$(HOSTCC)" \
 	HOSTCFLAGS="$(HOST_CFLAGS) $(HOST_CPPFLAGS) -std=gnu11" \
