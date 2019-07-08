@@ -26,15 +26,15 @@
 +
 +#include <stdint.h>
 +
-+#ifndef linux
++#if defined(linux) || defined(__CYGWIN__)
++#include <endian.h>
++#else
 +#ifdef __FreeBSD__
 +#include <machine/endian.h>
 +#endif
 +#define __BYTE_ORDER BYTE_ORDER
 +#define __BIG_ENDIAN BIG_ENDIAN
 +#define __LITTLE_ENDIAN LITTLE_ENDIAN
-+#else
-+#include <endian.h>
 +#endif
 +
 +
